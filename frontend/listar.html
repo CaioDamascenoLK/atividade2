@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Produtos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Produtos Cadastrados</h1>
+    <a href="index.html">Voltar</a> | <a href="cadastro.html">Novo Cadastro</a>
+    <hr>
+    
+    <ul id="listaProdutos"></ul>
+
+    <script>
+        async function carregarProdutos() {
+            const response = await fetch('http://localhost:3000/produtos');
+            const produtos = await response.json();
+            
+            const lista = document.getElementById('listaProdutos');
+            lista.innerHTML = '';
+
+            produtos.forEach(p => {
+                const li = document.createElement('li');
+                li.textContent = `${p.nome} - R$ ${p.preco}`;
+                lista.appendChild(li);
+            });
+        }
+        carregarProdutos();
+    </script>
+</body>
+</html>
