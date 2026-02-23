@@ -27,6 +27,20 @@ app.post('/produtos', (req, res) => {
     });
 });
 
+// ROTA 3: Apagar produto (DELETE)
+app.delete('/produtos/:id', (req, res) => {
+    const { id } = req.params;
+    const sql = 'DELETE FROM produtos_caiodamasceno WHERE id = ?';
+
+    db.query(sql, [id], (err, result) => {
+        if (err) return res.status(500).json({ error: err });
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Produto não encontrado' });
+        }
+        res.json({ message: 'Produto deletado com sucesso!' });
+    });
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);

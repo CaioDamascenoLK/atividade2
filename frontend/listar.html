@@ -22,10 +22,27 @@
 
             produtos.forEach(p => {
                 const li = document.createElement('li');
-                li.textContent = `${p.nome} - R$ ${p.preco}`;
+                li.innerHTML = `
+                    <span>${p.nome} - R$ ${parseFloat(p.preco).toFixed(2)}</span>
+                    <button class="delete-btn" onclick="deletarProduto(${p.id})">Apagar</button>
+                `;
                 lista.appendChild(li);
             });
         }
+
+        async function deletarProduto(id) {
+            if (!confirm('Tem certeza que deseja apagar este produto?')) return;
+            const response = await fetch(`http://localhost:3000/produtos/${id}`, {
+                method: 'DELETE'
+            });
+            if (response.ok) {
+                alert('Produto apagado com sucesso!');
+                carregarProdutos();
+            } else {
+                alert('Erro ao apagar produto.');
+            }
+        }
+
         carregarProdutos();
     </script>
 </body>
