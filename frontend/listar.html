@@ -24,6 +24,7 @@
                 const li = document.createElement('li');
                 li.innerHTML = `
                     <span>${p.nome} - R$ ${parseFloat(p.preco).toFixed(2)}</span>
+                    <a href="editar.html?id=${p.id}"><button>Editar</button></a>
                     <button class="delete-btn" onclick="deletarProduto(${p.id})">Apagar</button>
                 `;
                 lista.appendChild(li);

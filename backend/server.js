@@ -41,6 +41,34 @@ app.delete('/produtos/:id', (req, res) => {
     });
 });
 
+// ROTA 4: Buscar produto por ID (GET)
+app.get('/produtos/:id', (req, res) => {
+    const { id } = req.params;
+    const sql = 'SELECT * FROM produtos_caiodamasceno WHERE id = ?';
+    db.query(sql, [id], (err, results) => {
+        if (err) return res.status(500).json({ error: err });
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'Produto não encontrado' });
+        }
+        res.json(results[0]);
+    });
+});
+
+// ROTA 5: Atualizar produto (PUT)
+app.put('/produtos/:id', (req, res) => {
+    const { id } = req.params;
+    const { nome, descricao, preco } = req.body;
+    const sql = 'UPDATE produtos_caiodamasceno SET nome = ?, descricao = ?, preco = ? WHERE id = ?';
+
+    db.query(sql, [nome, descricao, preco, id], (err, result) => {
+        if (err) return res.status(500).json({ error: err });
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Produto não encontrado' });
+        }
+        res.json({ message: 'Produto atualizado com sucesso!' });
+    });
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
